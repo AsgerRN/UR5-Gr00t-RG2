@@ -1,0 +1,22 @@
+[project]
+name = "UR5-Gr00t-RG2"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "ipykernel>=7.3.0",
+    "lerobot[groot]>=0.6.1",
+    "opencv-python>=5.0.0.93",
+    "pytest>=9.1.1",
+    "torch>=2.7,<2.12",
+    "torchvision>=0.22,<0.27",
+    "ur-rtde>=1.6.5",
+]
+
+[project.scripts]
+UR5-Gr00t-RG2 = "UR5-Gr00t-RG2:main"
+
+[build-system]
+requires = ["uv_build>=0.12.9,<0.13.0"]
+build-backend = "uv_build"
