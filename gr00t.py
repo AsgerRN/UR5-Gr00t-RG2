@@ -14,39 +14,6 @@ class Gr00t:
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         self.policy, self.preprocessor, self.postprocessor = self._init_policy(checkpoint_name)
 
-        for step in self.preprocessor.steps:
-            print(type(step).__name__)
-
-            if hasattr(step, "video_modality_keys"):
-                print(
-                    "video_modality_keys:",
-                    step.video_modality_keys,
-                )
-
-            if hasattr(step, "video_horizon"):
-                print(
-                    "video_horizon:",
-                    step.video_horizon,
-                )
-
-            if hasattr(step, "image_target_size"):
-                print(
-                    "image_target_size:",
-                    step.image_target_size,
-                )
-
-            if hasattr(step, "image_crop_size"):
-                print(
-                    "image_crop_size:",
-                    step.image_crop_size,
-                )
-
-            if hasattr(step, "crop_fraction"):
-                print(
-                    "crop_fraction:",
-                    step.crop_fraction,
-                )
-
     def _init_policy(self, checkpoint_name:str) -> tuple[Any, Any, Any]:
         checkpoint_metadata_path = snapshot_download(
             checkpoint_name,
@@ -75,15 +42,6 @@ class Gr00t:
             raise ValueError(f"Expected RGB HWC image, got shape {camera_frame.shape}")
         if robot_state.shape != (8,):
             raise ValueError(f"Expected GR00T state (8,), got {robot_state.shape}: {robot_state}")
-
-        print("RAW ROBOT STATE:")
-        print(robot_state)
-        print("shape:", robot_state.shape)
-
-        if robot_state.shape != (8,):
-            raise ValueError(
-                f"Expected GR00T WidowX robot_state shape (8,), got {robot_state.shape}: {robot_state}"
-    )
 
         # The LeRobot Groot processor expects a C,H,W Torch image tensor.
         image = torch.from_numpy(np.ascontiguousarray(camera_frame.transpose(2, 0, 1))) # type: ignore
