@@ -138,6 +138,7 @@ class UR5_RG2:
         """
         Move the RG2 to a target width in mm with a specified force in N.
         """
+        width = min(max(width_mm, 1), 110)  # clamp width to [1, 110] mm
         width = int(round(width_mm * 10))
         force = int(round(force_n * 10))
 
@@ -167,15 +168,31 @@ class UR5_RG2:
         while self.is_busy():
             sleep(sleep_interval)
 
+    def test_connection(self) -> bool:
+        """
+        Verify connection by attempting to read a register.
+        Returns True if successful, False otherwise.
+        """
+        try:
+            self._read_registers(268, 1)
+            return True
+        except Exception:
+            return False
+
 if __name__ == "__main__":
 
-    ip_address = "192.168.1.103"
+    ip_address = "10.242.15.100"
     port = 54321
     slave_address = 65
 
     rg2 = UR5_RG2(ip_address, port, slave_address)
+
+    print(f"Testing connection to RG2 at {ip_address}:{port}...")
+    if not rg2.test_connection():
+        print("❌ Failed to connect to RG2.")
+        exit(1)
+
     rg2.move(40.0, 10.0)
     rg2.move(80.0, 10.0)
-    #rg2.overwrite_move(0, 10.0)
     rg2.move_and_wait(100, 10.0)
     print(f"Current width: {rg2.get_width()} mm")

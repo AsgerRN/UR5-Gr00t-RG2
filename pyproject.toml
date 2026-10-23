@@ -6,12 +6,15 @@ readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
     "ipykernel>=7.3.0",
-    "lerobot[groot]>=0.6.1",
+    "lerobot[dataset,groot]>=0.6.1",
     "opencv-python>=5.0.0.93",
+    "pyorbbecsdk2>=2.0.18",
     "pytest>=9.1.1",
+    "scipy>=1.18.1",
     "torch>=2.7,<2.12",
     "torchvision>=0.22,<0.27",
     "ur-rtde>=1.6.5",
+    "wandb>=0.18.0",
 ]
 
 [project.scripts]
